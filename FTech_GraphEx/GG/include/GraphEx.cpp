@@ -386,15 +386,19 @@ void CGraphEx::DrawGraphData(CDC *pDC)
 			if (j==0) pDC->MoveTo((int)pt.x, (int)pt.y);
 			pDC->LineTo((int)pt.x, (int)pt.y);
 
-			int size = m_pStGraphData[i].nSizeGraphPoint;
-
-			CBrush brs(m_pStGraphData[i].clrGraphPoint);
-			CBrush* pOldBrs=NULL;
-			pOldBrs = pDC->SelectObject(&brs);
-			pOldPen = pDC->SelectObject(&point_pen);
-			pDC->Ellipse(pt.x-size, pt.y-size, pt.x+size, pt.y+size);
-			pDC->SelectObject(pOldPen);
-			pDC->SelectObject(pOldBrs);
+			// 2017-01-03 ggkim
+			// modify : 그래프 포인트 그리는지 여부 확인이 누락되어 있었음.
+			if (m_pStGraphData[i].bDrawGraphPoint == true)
+			{
+				int size = m_pStGraphData[i].nSizeGraphPoint;
+				CBrush brs(m_pStGraphData[i].clrGraphPoint);
+				CBrush* pOldBrs=NULL;
+				pOldBrs = pDC->SelectObject(&brs);
+				pOldPen = pDC->SelectObject(&point_pen);
+				pDC->Ellipse(pt.x-size, pt.y-size, pt.x+size, pt.y+size);
+				pDC->SelectObject(pOldPen);
+				pDC->SelectObject(pOldBrs);
+			}
 		}
 		data_pen.DeleteObject();
 		point_pen.DeleteObject();
